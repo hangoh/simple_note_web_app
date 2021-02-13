@@ -1,0 +1,59 @@
+{%extends 'base.html'%}
+{%load static%}
+    {%block body-block%}
+    <style type="text/css">
+        #error{
+          color: red;
+          text-align: center;
+        }
+        #reset:hover{
+            font-size: 1.1em;
+            color:red;
+        }
+        .card-signin {
+            width: 100%;
+            max-width: 400px;
+            padding: 15px;
+            margin: auto;
+        }
+        
+        .form-signin input[type="email"] {
+          margin-bottom: 10px;
+          border-bottom-right-radius: 0;
+          border-bottom-left-radius: 0;
+        }
+        .form-signin input[type="password"] {
+          margin-bottom: -1px;
+          border-top-left-radius: 0;
+          border-top-right-radius: 0;
+        }
+      </style>
+
+<div class="container-fluid">
+	<div class="row justify-content-center">
+		<div class="card card-signin">
+		  <div class="card-body">
+		    <form class="form-signin" method="post">
+                {% csrf_token %}
+                <p id='error' class='d-flex'>
+                  {{error}}
+                </p>
+                <p>
+                    <label for="email">Email:</label>
+                    <input type="email" name="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
+                    <label for="password">Password:</label>
+                    <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Password" required>
+                </p>
+
+				<button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
+
+                </form>
+                <div class='d-flex flex-column my-4'>
+                    <a class='m-auto' id ='reset' href="#">Reset Password</a>
+                </div>
+		  </div>
+		</div>
+		
+	</div>
+</div>
+    {%endblock%}

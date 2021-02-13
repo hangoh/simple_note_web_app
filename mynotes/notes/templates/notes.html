@@ -1,0 +1,88 @@
+{%extends 'base.html'%}
+<!DOCTYPE html>
+{%load static%}
+{%block body-block%}
+        <style>
+            .add_note_btn{
+                background-color: blue;
+                border-radius: 15px;
+            }
+            .note_add{
+                color:white;
+                text-decoration: none;
+                
+            }
+            .add_note_btn:hover{
+                background-color: rgb(27, 64, 133);
+            }
+            .note_add:hover{
+                color:white;
+                text-decoration: none;
+                font-size: 1.2em;
+            }
+            
+          </style>
+        <div class="container">
+            <div class="cols-100 rows-flex flex-row justify-content-center  align-items-start">
+                <div class="card profile-card m-2">
+                    <div class="card-body">
+                        <div class="d-flex flex-column justify-content-center ">
+                           {%if id%}
+                            <div class="d-flex flex-row align-items-start">
+                            <button type="button" class="add_note_btn"><a href="{%url 'notes:create_note' name_id=id %}" class='note_add'><span class="material-icons  ">
+                                note_add
+                                </span>Add New Note</a></button>
+                            </div>
+                              
+                              
+
+                           
+                            {% if notes%}
+                                {% for note in notes%}
+                                <div class="card profile-card m-2 ">
+                                    <div class="card-body">
+                                        <div class="d-flex flex-column justify-content-center ">
+                                            <div class="d-flex flex-row justify-content-center ">
+                                                <a href="{%url 'notes:notes_detail' name_id=id note_id=note.id%}" class='user_notelist text-decoration-none'><h3>{{note.title}}</h3></a>
+                                                <div class="d-flex flex-row-reverse flex-grow-1">
+                                                    <div class="btn btn-outline-danger" id='delete_note' onclick="DeleteNote('{{id}}','{{note.id}}')">delete</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {%endfor%}
+                            {%else%}
+                            
+                                <h3>No Notes Created Yet</h3>
+                            {%endif%}
+                            {%endif%}
+                        </div>
+                    </div>
+                </div>
+                <!---->
+            </div>
+        </div>
+
+        <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+<script type='text/javascript'>
+    function DeleteNote(name_id, note_id){
+        var url='{%url "notes:remove_note" name_id=123 note_id=456%}'.replace('123',name_id).replace('456',note_id)
+        $.ajax({
+            dataType:'json',
+            timeout:5000,
+            url:url,
+            method:'GET',
+            success:function(data){
+                alert('deleted')
+            },
+            error:function(data){
+                alert(data.response)
+            },
+            complete:function(data){
+                location.reload()
+            }
+        })
+    }
+</script>
+   {% endblock%}

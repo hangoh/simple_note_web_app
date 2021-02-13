@@ -1,0 +1,29 @@
+{%extends 'base.html'%}
+{%load static%}
+
+{%block body-block%}
+<div class=" container">
+    <div class="cols-100 flex-row justify-content-center  align-items-start">
+        <div class="card profile-card m-2">
+            <div class="card-body">
+                <!--laptop screen-->
+                <div class=" d-none d-md-flex flex-column justify-content-center" >
+                    {%if note%}
+                        <h3 class="d-flex flex-column card-body text-decoration-underline">{{note.title}}</h3><br>
+                        <p>{{note.description}}</p>
+                    {%endif%}
+                </div>
+                <!--phone screen-->  
+                <div class=" d-flex d-md-none flex-column justify-content-center ">
+                    {%if note%}
+                    <h3 class="d-flex flex-column card-body text-decoration-underline">{{note.title}}</h3><br>
+                        <p>{{note.description}}</p>
+                    {%endif%}
+                    
+                </div>
+            </div>
+        </div>
+        <!---->
+    </div>
+</div>
+{%endblock%}

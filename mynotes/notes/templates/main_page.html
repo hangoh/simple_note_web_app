@@ -1,0 +1,117 @@
+{%extends 'base.html'%}
+<!DOCTYPE html>
+{%load static%}
+{%block body-block%}
+        <style>
+            #add_notelist_submit{
+                background-color:rgb(19, 62, 97); 
+                color: white;
+                border-color: black;
+                border-radius: 20%;
+
+            }
+            .user_note{
+                color: black;
+                text-decoration: none;
+            }
+            .user_note:hover{
+                color:gray;
+            }
+            .user_note:visited{
+                color: brown;
+            }
+            
+            </style>
+            
+    
+
+
+        <div class="container">
+            <div class="cols-100 rows-flex flex-row justify-content-center  align-items-start">
+                <div class="card profile-card m-2">
+                    <div class="card-body">
+                        <div class="d-flex flex-column justify-content-center ">
+
+                            <form method="POST" id="notelist_create">
+                                {%csrf_token%}
+                                <input type="text" name="notelist"  class='form-control' placeholder="add new catogory">
+                                <button type="submit"><span class="material-icons" >
+                                    library_add
+                                    </span></button>
+                            </form>
+
+                            {% if note_list%}
+                                {% for notelist in note_list%}
+                                <div class="card profile-card m-2 ">
+                                    <div class="card-body">
+                                        <div class="d-flex flex-column justify-content-center ">
+                                            <div class="d-flex flex-row justify-content-center ">
+                                                <a href="{%url 'notes:notes_page' name_id=notelist.id%}" class='user_note'><h3>{{notelist.name}}</h3></a>
+                                                <div class="d-flex flex-row-reverse flex-grow-1">
+                                                    <div class="btn btn-outline-danger" id='delete_notelist' onclick="deleteNotelist('{{notelist.id}}')">delete</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {%endfor%}
+                            {%else%}
+                                <h3>No Notes List Created Yet</h3>
+                            {%endif%}
+                        </div>
+                    </div>
+                </div>
+                <!---->
+            </div>
+        </div>
+<script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+<script type='text/javascript'>
+    
+
+    $(document).on('submit','#notelist_create',function(event){
+        event.preventDefault();
+        var notelist_create=$('#notelist_create')
+
+        $.ajax({
+            data:notelist_create.serialize(),
+            dataType:'json',
+            type:'POST',
+            timeout:5000,
+            url:'{%url "notes:create_notelist"%}',
+            headers:{'X-csrf_token':'{%csrf_token%}'},
+            success:function(data){
+                if(data.response=='success'){
+                    alert('added')
+                }
+            },
+            error:function(data){
+                alert(data.response)
+            },
+            complete:function(data){
+                location.reload()
+            }
+        })
+        
+    })
+
+    function deleteNotelist(name_id){
+        var url='{%url "notes:remove_notelist" name_id=12345%}'.replace('12345',name_id)
+        $.ajax({
+            dataType:'json',
+            type:'GET',
+            timeout:5000,
+            url:url,
+            success:function(data){
+                alert('deleted')
+            },
+            error:function(data){
+                alert(data.response)
+            },
+            complete:function(data){
+                location.reload()
+            }
+        })
+    }
+</script>
+
+{%endblock%}
